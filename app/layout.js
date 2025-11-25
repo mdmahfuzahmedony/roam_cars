@@ -1,5 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "./component/common/Navbar";
+import Footer from "./component/common/Footer";
+// ১. AuthProvider ইমপোর্ট করুন (পাথ আপনার ফোল্ডার স্ট্রাকচার অনুযায়ী দিন)
+import AuthProvider from "./component/auth/AuthProvider"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +26,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {/* ২. এখানে AuthProvider দিয়ে ভেতরের সব কিছু Wrap করে দিন */}
+        <AuthProvider>
+          <Navbar />
+          <div className="min-h-screen">{children}</div>
+          <Footer />
+        </AuthProvider>
+
       </body>
     </html>
   );
