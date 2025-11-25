@@ -20,7 +20,7 @@ const Footer = () => {
     <div className="w-full  mx-auto bg-[#1a202c] text-white py-12">
       {" "}
       {/* Adjusted background color and text color */}
-      <footer className="footer max-w-[1450px] md:mx-auto mx-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="footer max-w-[1450px] md:mx-auto mx-4  py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Entox Section */}
         <aside className="space-y-4">
           <div className="flex items-center space-x-2">

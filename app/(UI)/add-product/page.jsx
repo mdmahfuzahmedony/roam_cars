@@ -48,7 +48,7 @@ const AddProductPage = () => {
 
   return (
     <div className="max-w-[1000px] bg-base-200 px-10 mx-auto p-8 shadow-lg rounded-[20px] mt-10">
-      <h1 className="text-3xl font-bold mb-6 text-center">Add New Product</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Add New Product</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title */}
         <div>
