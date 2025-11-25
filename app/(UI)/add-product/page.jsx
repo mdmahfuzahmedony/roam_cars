@@ -9,7 +9,7 @@ const AddProductPage = () => {
     fullDescription: "",
     price: "",
     imageUrl: "",
-    meta: ""
+    meta: "",
   });
 
   const handleChange = (e) => {
@@ -20,10 +20,10 @@ const AddProductPage = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:2002/roam_cars", {
+      const res = await fetch("https://roam-car-server.vercel.app/roam_cars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
@@ -35,7 +35,7 @@ const AddProductPage = () => {
           fullDescription: "",
           price: "",
           imageUrl: "",
-          meta: ""
+          meta: "",
         });
       } else {
         alert("Failed to add product");
@@ -94,7 +94,9 @@ const AddProductPage = () => {
 
         {/* Price */}
         <div>
-          <label className="block font-medium mb-1">Price / Relevant Field</label>
+          <label className="block font-medium mb-1">
+            Price / Relevant Field
+          </label>
           <input
             type="text"
             name="price"

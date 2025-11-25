@@ -13,7 +13,10 @@ export default function Page() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch("http://localhost:2002/roam_cars", { cache: "no-store" });
+        const res = await fetch(
+          "https://roam-car-server.vercel.app/roam_cars",
+          { cache: "no-store" }
+        );
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setProducts(data);
@@ -37,11 +40,15 @@ export default function Page() {
     return 0;
   });
 
-  if (loading) return <div className="text-white text-center py-10">Loading products...</div>;
-  if (error) return <div className="text-red-500 text-center py-10">Error: {error}</div>;
+  if (loading)
+    return (
+      <div className="text-white text-center py-10">Loading products...</div>
+    );
+  if (error)
+    return <div className="text-red-500 text-center py-10">Error: {error}</div>;
 
   return (
-    <div className="max-w-[1400px] mx-auto my-10">
+    <div className="max-w-[1450px] mx-auto my-10">
       <div className="flex flex-col md:flex-row justify-between items-center mb-5 p-4  bg-gray-00 rounded-lg shadow-md">
         <h1 className="text-white text-2xl font-semibold mb-4 md:mb-0">
           All Products: <span className="text-blue-700">{products.length}</span>

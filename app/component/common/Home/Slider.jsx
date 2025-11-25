@@ -1,8 +1,8 @@
 // Add this line at the very top of the file
 "use client";
 
-import React, { useState } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // For slider arrows
+import React, { useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // For slider arrows
 
 // You'll need to install react-icons if you haven't already:
 // npm install react-icons
@@ -10,10 +10,10 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // For slider ar
 // yarn add react-icons
 
 const images = [
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1498050108023-c5249f4cd085?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1476510793741-36427d825860?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1510915228340-c64a5c9a4a75?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1498050108023-c5249f4cd085?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1476510793741-36427d825860?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1510915228340-c64a5c9a4a75?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
 const Slider = () => {
@@ -36,7 +36,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="max-w-[1400px] h-[580px] w-full m-auto py-16 px-4 relative group">
+    <div className="max-w-[1450px] h-[580px] w-full m-auto py-16 px-4 relative group">
       {/* Slide Image */}
       <div
         style={{ backgroundImage: `url(${images[currentIndex]})` }}
@@ -59,7 +59,7 @@ const Slider = () => {
             key={slideIndex}
             onClick={() => goToSlide(slideIndex)}
             className={`text-2xl cursor-pointer mx-1 ${
-              currentIndex === slideIndex ? 'text-gray-800' : 'text-gray-400'
+              currentIndex === slideIndex ? "text-gray-800" : "text-gray-400"
             }`}
           >
             ●

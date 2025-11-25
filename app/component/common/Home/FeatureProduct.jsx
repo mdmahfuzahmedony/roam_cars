@@ -9,16 +9,18 @@ const FeatureProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const itemsPerPage = 4; // এক স্লাইডে ৪টি প্রোডাক্ট দেখাবে
 
   // Data Fetching logic
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:2002/roam_cars");
+        const response = await fetch(
+          "https://roam-car-server.vercel.app/roam_cars"
+        );
         const data = await response.json();
-                
+
         setProducts(data);
         setLoading(false);
       } catch (error) {
@@ -55,10 +57,10 @@ const FeatureProduct = () => {
 
   return (
     <section className="bg-base-300 py-16 my-20 md:py-20">
-      <div className="container max-w-[1400px] mx-auto px-4 ">
+      <div className="container max-w-[1450px] mx-auto px-4 ">
         {/* Section Header */}
         <div className="flex justify-between items-center mb-10 md:mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-white">
+          <h2 className="text-2xl  md:text-5xl font-bold text-white">
             Recently Added
           </h2>
           <Link
@@ -73,7 +75,7 @@ const FeatureProduct = () => {
         {/* Product Cards Slider */}
         <div className="relative">
           {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 transition-transform duration-500 ease-in-out">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 md:gap-8 transition-transform duration-500 ease-in-out">
               {currentProducts.map((product) => (
                 <div
                   key={product._id}
@@ -86,14 +88,14 @@ const FeatureProduct = () => {
                       alt={product.title}
                       className="w-full h-full object-cover"
                     />
-                    
+
                     {/* Badge Logic (Optional: যদি ডাটাবেসে badge থাকে তবে দেখাবে, না থাকলে ডিফল্ট কিছু দিতে পারেন) */}
                     {product.badge && (
                       <span className="absolute top-4 left-4 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-800">
                         {product.badge}
                       </span>
                     )}
-                    
+
                     <button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 text-gray-500 hover:text-blue-600">
                       <FaBookmark className="w-5 h-5" />
                     </button>
@@ -104,18 +106,20 @@ const FeatureProduct = () => {
                     <h3 className="text-xl font-semibold text-gray-900 mb-2 leading-tight line-clamp-1">
                       {product.title}
                     </h3>
-                    
+
                     {/* Description or Meta data */}
                     <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-grow">
                       {/* যদি description থাকে সেটা দেখাবে, অথবা meta ডাটা */}
-                      {product.description || product.meta || "No description available"}
+                      {product.description ||
+                        product.meta ||
+                        "No description available"}
                     </p>
-                    
+
                     <div className="mt-auto">
                       <p className="text-2xl font-bold text-gray-900 mb-4">
                         {product.price}
                       </p>
-                      
+
                       <Link
                         href={`/products/${product._id}`}
                         className="flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"

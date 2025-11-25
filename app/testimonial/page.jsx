@@ -11,7 +11,9 @@ const TestimonialSection = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const res = await fetch("http://localhost:2002/testimonial");
+        const res = await fetch(
+          "https://roam-car-server.vercel.app/testimonial"
+        );
         const data = await res.json();
         setTestimonials(data);
         setLoading(false);
@@ -35,14 +37,14 @@ const TestimonialSection = () => {
   return (
     <section className="bg-base-200 my-20 py-16 md:py-24">
       <div className="container mx-auto px-4 max-w-7xl">
-        
         {/* Header Section */}
         <div className="text-center bg-base-200 mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
             Trusted by Thousands
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            See what our customers from around the world have to say about their experience with Roam Cars.
+          <p className="text-gray-400 max-w-2xl mx-auto text-md">
+            See what our customers from around the world have to say about their
+            experience with Roam Cars.
           </p>
         </div>
 
@@ -61,7 +63,9 @@ const TestimonialSection = () => {
                 {[...Array(5)].map((_, i) => (
                   <FaStar
                     key={i}
-                    className={i < item.rating ? "text-yellow-400" : "text-gray-300"}
+                    className={
+                      i < item.rating ? "text-yellow-400" : "text-gray-300"
+                    }
                   />
                 ))}
               </div>
@@ -79,7 +83,7 @@ const TestimonialSection = () => {
                   alt={item.name}
                   className="w-14 h-14 rounded-full object-cover border-2 border-blue-500 p-0.5"
                 />
-                
+
                 {/* User Info */}
                 <div className="ml-4">
                   <h4 className="text-lg font-bold text-blue-100 leading-none mb-1">
@@ -88,7 +92,7 @@ const TestimonialSection = () => {
                   <div className="text-sm text-gray-400 my-2 font-medium">
                     {item.role}
                   </div>
-                  
+
                   {/* Location with Icon */}
                   {item.location && (
                     <div className="flex items-center text-xs text-gray-400 mt-1">

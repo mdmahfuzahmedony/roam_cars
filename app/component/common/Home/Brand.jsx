@@ -9,9 +9,12 @@ const BrandSlider = () => {
   useEffect(() => {
     const fetchLogos = async () => {
       try {
-        const res = await fetch("http://localhost:2002/roam_cars", {
-          cache: "no-store",
-        });
+        const res = await fetch(
+          "https://roam-car-server.vercel.app/roam_cars",
+          {
+            cache: "no-store",
+          }
+        );
         const data = await res.json();
 
         // Assume each product has a `brandLogo` field (or `image` as logo)
@@ -33,7 +36,7 @@ const BrandSlider = () => {
   if (logos.length === 0) return null;
 
   return (
-    <section className="bg-white max-w-[1400px] mx-auto my-20 rounded-4xl py-12 md:py-16 overflow-hidden">
+    <section className="bg-white max-w-[1450px] md:mx-auto my-20 mx-4 rounded-2xl py-12 md:py-16 overflow-hidden">
       <div className="container mx-auto px-4 max-w-7xl">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
           Our Valued Partners

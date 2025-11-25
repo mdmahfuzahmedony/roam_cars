@@ -11,9 +11,12 @@ export default function ManageProducts() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:2002/roam_cars", {
-          cache: "no-store",
-        });
+        const res = await fetch(
+          "https://roam-car-server.vercel.app/roam_cars",
+          {
+            cache: "no-store",
+          }
+        );
 
         const data = await res.json();
         setProducts(data);
@@ -31,9 +34,12 @@ export default function ManageProducts() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure?")) return;
 
-    const res = await fetch(`http://localhost:2002/roam_cars/${id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `https://roam-car-server.vercel.app/roam_cars/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (res.ok) {
       setProducts((prev) => prev.filter((p) => p._id !== id));
@@ -44,7 +50,7 @@ export default function ManageProducts() {
   if (loading) return <p className="p-6 text-xl">Loading...</p>;
 
   return (
-    <div className="p-6 max-w-[1400px] mx-auto my-20">
+    <div className="p-6 max-w-[1450px] mx-auto my-20">
       <h1 className="text-3xl font-bold mb-6 text-center">Manage Products</h1>
 
       <table className="w-full my-10 border-collapse border border-gray-300">

@@ -19,7 +19,8 @@ const Navbar = () => {
 
   return (
     <div className="w-full bg-base-100 shadow-md py-4 sticky top-0 z-50 transition-all duration-300">
-      <div className="navbar max-w-[1400px] mx-auto">
+
+      <div className="navbar max-w-[1450px] mx-auto">
         {/* Navbar Start (Logo + Mobile Menu) */}
         <div className="navbar-start">
           <div className="dropdown">
@@ -63,7 +64,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             href="/"
-            className="text-3xl font-bold text-gray-800 cursor-pointer"
+            className="text-3xl font-bold text-gray-100 cursor-pointer"
           >
             Roam <span className="font-black text-[#4bc0d9]">Car</span>
           </Link>

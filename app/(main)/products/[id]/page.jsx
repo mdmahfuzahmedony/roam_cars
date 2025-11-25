@@ -7,12 +7,19 @@ export default async function SingleProductPage({ params }) {
   const resolvedParams = await Promise.resolve(params);
   const { id } = resolvedParams;
 
-  const res = await fetch(`http://localhost:2002/roam_cars/${id}`, { cache: "no-store" });
+  const res = await fetch(
+    `https://roam-car-server.vercel.app/roam_cars/${id}`,
+    { cache: "no-store" }
+  );
 
   // Error handling logic
   if (!res.ok) {
     console.error(`Backend fetch failed with status: ${res.status}`);
-    return <div className="text-center py-20 text-red-600 font-semibold">Failed to load product details. Status: {res.status}</div>;
+    return (
+      <div className="text-center py-20 text-red-600 font-semibold">
+        Failed to load product details. Status: {res.status}
+      </div>
+    );
   }
 
   let product;
@@ -20,25 +27,36 @@ export default async function SingleProductPage({ params }) {
     product = await res.json();
   } catch (e) {
     console.error("Failed to parse backend response as JSON:", e);
-    return <div className="text-center py-20 text-red-600">Invalid data received.</div>;
+    return (
+      <div className="text-center py-20 text-red-600">
+        Invalid data received.
+      </div>
+    );
   }
 
   if (!product || !product._id) {
-    return <div className="text-center py-20 text-red-600 text-xl">Product not found.</div>;
+    return (
+      <div className="text-center py-20 text-red-600 text-xl">
+        Product not found.
+      </div>
+    );
   }
 
   return (
-    <section className="bg-base-200 max-w-[1400px] mx-auto my-20 rounded-4xl min-h-screen py-12 flex items-center justify-center">
+    <section className="bg-base-200 max-w-[1450px] mx-auto my-20 rounded-4xl min-h-screen py-12 flex items-center justify-center">
       <div className="container mx-auto px-4 max-w-6xl">
-        
         {/* Back Button (Optional) */}
         <div className="mb-6">
-           <a href="/all-products" className="text-gray-500 hover:text-blue-600 transition-colors">← Back to Listings</a>
+          <a
+            href="/all-products"
+            className="text-gray-500 hover:text-blue-600 transition-colors"
+          >
+            ← Back to Listings
+          </a>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            
             {/* Left Side: Image */}
             <div className="relative h-96 md:h-auto bg-gray-200">
               {product.image ? (
@@ -48,7 +66,9 @@ export default async function SingleProductPage({ params }) {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-400">No Image Available</div>
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  No Image Available
+                </div>
               )}
               {/* Badge on Image */}
               <div className="absolute top-4 left-4">
@@ -60,7 +80,6 @@ export default async function SingleProductPage({ params }) {
 
             {/* Right Side: Product Details */}
             <div className="p-8 md:p-12 flex flex-col justify-center">
-              
               {/* Meta / Category */}
               <div className="flex items-center text-blue-600 mb-3 text-sm font-semibold tracking-wider uppercase">
                 <FaTag className="mr-2" />
@@ -79,7 +98,9 @@ export default async function SingleProductPage({ params }) {
 
               {/* Description */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Description</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  Description
+                </h3>
                 <p className="text-gray-600 text-base leading-relaxed">
                   {product.description}
                 </p>
@@ -97,7 +118,6 @@ export default async function SingleProductPage({ params }) {
                   <FaWhatsapp className="mr-2 text-xl" /> WhatsApp
                 </button>
               </div>
-
             </div>
           </div>
         </div>

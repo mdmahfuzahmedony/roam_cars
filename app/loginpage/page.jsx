@@ -199,7 +199,7 @@ const LoginPage = () => {
               &times;
             </button>
             <h3 className="text-xl font-bold text-gray-800 mb-2">Reset Password</h3>
-            <p className="text-sm text-gray-500 mb-5">Enter your email address and we'll send you a link to reset your password.</p>
+            <p className="text-sm text-gray-500 mb-5">Enter your email address and  send you a link to reset your password.</p>
             
             {resetMessage && (
                <div className="mb-4 text-sm font-medium text-green-700 bg-green-100 p-3 rounded-lg border border-green-200">

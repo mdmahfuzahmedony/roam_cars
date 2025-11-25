@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden shadow-md w-72 m-4 font-sans hover:shadow-lg transition-shadow duration-300">
+    <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-md w-72 m-4 font-sans hover:shadow-lg transition-shadow duration-300">
       <img
         src={product.image}
         alt={product.title}
