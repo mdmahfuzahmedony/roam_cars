@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ProductCard from "../../component/productcard"; // adjust path
+import ProductCard from "../../component/productcard/ProductCard"; // adjust path
+
 
 export default function Page() {
   const [products, setProducts] = useState([]);
