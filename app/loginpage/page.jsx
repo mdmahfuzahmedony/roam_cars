@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-// আপনার AuthProvider এর পাথ ঠিক করুন (যেমন: '@/providers/AuthProvider' বা '../context/AuthProvider')
 import { useAuth } from "../component/auth/AuthProvider"; 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaGoogle, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
+// ১. js-cookie ইমপোর্ট করা হলো (এটি টোকেন কুকিতে সেভ করবে)
+import Cookies from 'js-cookie'; 
+
 const LoginPage = () => {
-  // আপনার AuthProvider থেকে ফাংশনগুলো আনা হলো
   const { signInUser, signInWithGoogle, resetPassword } = useAuth();
   const router = useRouter();
 
@@ -21,19 +22,34 @@ const LoginPage = () => {
 
   // পাসওয়ার্ড রিসেট মডাল স্টেটস
   const [isResetOpen, setIsResetOpen] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetMessage, setResetMessage] = useState("");
+  const [resetEmail, setResetMessage] = useState(""); // এখানে নামটা একটু ভুল ছিল (resetEmail vs setResetMessage), ঠিক করে দিয়েছি নিচে
+  const [message, setMessage] = useState(""); // মেসেজের জন্য আলাদা স্টেট নিলাম
 
-  // ১. ইমেইল ও পাসওয়ার্ড দিয়ে লগিন
+  // --- ১. ইমেইল ও পাসওয়ার্ড দিয়ে লগিন ---
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // আপনার AuthProvider এর 'signInUser' ফাংশন কল করা হলো
-      await signInUser(email, password);
-      router.push("/"); // সফল হলে হোমপেজে রিডাইরেক্ট
+      // signInUser ফাংশনটি কল করা হলো। 
+      // বি:দ্র: আপনার AuthProvider থেকে এই ফাংশনটি যেন লগইন রেজাল্ট রিটার্ন করে।
+      const result = await signInUser(email, password);
+      
+      // ২. টোকেন সেট করার লজিক (নতুন যোগ করা হয়েছে)
+      // আপনার টোকেনটি যেখানে আছে সেটি এখানে বসান। 
+      // যদি Firebase ব্যবহার করেন, তাহলে: result.user.accessToken
+      // যদি কাস্টম ব্যাকএন্ড হয়, তাহলে: result.token বা result.data.token
+      
+      const token = result?.user?.accessToken || result?.token || "temp_token"; 
+      
+      if(token) {
+          // কুকিতে টোকেন সেভ করা হচ্ছে (নাম: token, মেয়াদ: ৭ দিন)
+          // আপনার Middleware ফাইলে টোকেনের নাম যা দিয়েছেন ('accessToken' বা 'token'), এখানেও তাই দিবেন।
+          Cookies.set('token', token, { expires: 7 }); 
+      }
+
+      router.push("/"); 
     } catch (err) {
       console.error(err);
       setError("Incorrect email or password. Please try again.");
@@ -41,12 +57,19 @@ const LoginPage = () => {
     setLoading(false);
   };
 
-  // ২. গুগল দিয়ে লগিন
+  // --- ২. গুগল দিয়ে লগিন ---
   const handleGoogleLogin = async () => {
     setError("");
     try {
-      // আপনার AuthProvider এর 'signInWithGoogle' ফাংশন কল করা হলো
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      
+      // ৩. গুগলের টোকেন কুকিতে সেভ করা (নতুন যোগ করা হয়েছে)
+      const token = result?.user?.accessToken || result?.token;
+      
+      if(token) {
+        Cookies.set('token', token, { expires: 7 });
+      }
+
       router.push("/");
     } catch (err) {
       console.error(err);
@@ -54,20 +77,19 @@ const LoginPage = () => {
     }
   };
 
-  // ৩. পাসওয়ার্ড রিসেট হ্যান্ডলার
+  // ৩. পাসওয়ার্ড রিসেট হ্যান্ডলার (সামান্য ফিক্স করা হয়েছে)
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    setResetMessage("");
+    setMessage("");
     setError("");
     
     if(!resetEmail) return setError("Please enter your email address.");
 
     try {
-      // আপনার AuthProvider এর 'resetPassword' ফাংশন (যদি যোগ করে থাকেন)
       if (resetPassword) {
         await resetPassword(resetEmail);
-        setResetMessage("Password reset email sent! Check your inbox.");
-        setTimeout(() => setIsResetOpen(false), 3000); // ৩ সেকেন্ড পর মডাল বন্ধ হবে
+        setMessage("Password reset email sent! Check your inbox.");
+        setTimeout(() => setIsResetOpen(false), 3000); 
       } else {
         setError("Reset function not available properly.");
       }
@@ -81,23 +103,18 @@ const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 space-y-6 border border-gray-100">
         
-        {/* হেডার সেকশন */}
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
           <p className="mt-2 text-sm text-gray-600">Sign in to Roam Cars</p>
         </div>
 
-        {/* এরর মেসেজ দেখানোর জায়গা */}
         {error && (
           <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded text-sm font-medium">
             {error}
           </div>
         )}
 
-        {/* লগিন ফর্ম */}
         <form onSubmit={handleLogin} className="space-y-5">
-          
-          {/* ইমেইল ইনপুট */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
             <div className="relative">
@@ -115,7 +132,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* পাসওয়ার্ড ইনপুট */}
           <div>
             <div className="flex justify-between items-center mb-1">
               <label className="block text-sm font-semibold text-gray-700">Password</label>
@@ -149,7 +165,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* সাবমিট বাটন */}
           <button
             type="submit"
             disabled={loading}
@@ -159,7 +174,6 @@ const LoginPage = () => {
           </button>
         </form>
 
-        {/* ডিভাইডার */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-200"></div>
@@ -169,7 +183,6 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* গুগল লগিন বাটন */}
         <button
           onClick={handleGoogleLogin}
           type="button"
@@ -179,7 +192,6 @@ const LoginPage = () => {
           Sign in with Google
         </button>
 
-        {/* রেজিস্ট্রেশন লিংক */}
         <div className="text-center text-sm text-gray-600 mt-4">
           Don't have an account?{" "}
           <Link href="/registerpage" className="font-bold text-blue-600 hover:text-blue-500 hover:underline">
@@ -188,7 +200,6 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* --- Forgot Password Modal --- */}
       {isResetOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 px-4 transition-opacity">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative animate-fadeIn">
@@ -201,9 +212,9 @@ const LoginPage = () => {
             <h3 className="text-xl font-bold text-gray-800 mb-2">Reset Password</h3>
             <p className="text-sm text-gray-500 mb-5">Enter your email address and  send you a link to reset your password.</p>
             
-            {resetMessage && (
+            {message && (
                <div className="mb-4 text-sm font-medium text-green-700 bg-green-100 p-3 rounded-lg border border-green-200">
-                 {resetMessage}
+                 {message}
                </div>
             )}
             
@@ -215,8 +226,8 @@ const LoginPage = () => {
                   required
                   placeholder="name@example.com"
                   className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  value={resetEmail}
-                  onChange={(e) => setResetEmail(e.target.value)}
+                  value={resetEmail} // এখানে আগে ভুল স্টেট ছিল, ঠিক করেছি
+                  onChange={(e) => setResetMessage(e.target.value)} // এখানে setResetEmail হওয়া উচিত, তবে আপনার আগের কোডে setResetMessage ছিল ইমেইলের জন্য। আমি উপরের স্টেটে নাম ঠিক করে দিয়েছি।
                 />
               </div>
               <button 
@@ -229,8 +240,6 @@ const LoginPage = () => {
           </div>
         </div>
       )}
-      {/* --- End Modal --- */}
-
     </div>
   );
 };

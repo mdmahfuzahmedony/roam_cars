@@ -1,21 +1,42 @@
-"use client"; // Client side interactivity-র জন্য
+"use client"; 
 
 import Link from "next/link";
 import React from "react";
-// আপনার ফোল্ডার স্ট্রাকচার অনুযায়ী AuthProvider এর পাথ ঠিক করে নিন
-import { useAuth } from "../auth/AuthProvider";
+import { useAuth } from "../auth/AuthProvider"; 
 import { FaUserCircle } from "react-icons/fa";
+import Cookies from "js-cookie"; 
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  const router = useRouter(); 
 
   const handleLogout = async () => {
     try {
-      await logOut();
+      await logOut(); 
+      Cookies.remove("token"); 
+      router.push("/loginpage");
     } catch (error) {
       console.error("Logout failed", error);
     }
   };
+
+  // কমন লিংকগুলো একটা ভেরিয়েবলে রাখলাম যাতে দুই জায়গায় লিখতে সুবিধা হয়
+  // তবে আপনি চাইলে সরাসরি নিচেও লিখতে পারেন
+  const navLinks = (
+    <>
+      <li><Link href="/" className="hover:text-[#4bc0d9] transition-colors">Home</Link></li>
+      <li><Link href="/all-products" className="hover:text-[#4bc0d9] transition-colors">All Products</Link></li>
+      
+      {/* 🔥 কন্ডিশন: ইউজার থাকলেই শুধু এই লিংকগুলো দেখাবে 🔥 */}
+      {user && (
+        <>
+          <li><Link href="/add-product" className="hover:text-[#4bc0d9] transition-colors">Add Product</Link></li>
+          <li><Link href="/manage-product" className="hover:text-[#4bc0d9] transition-colors">Manage Product</Link></li>
+        </>
+      )}
+    </>
+  );
 
   return (
     <div className="w-full bg-base-100 shadow-md py-4 sticky top-0 z-50 transition-all duration-300">
@@ -27,7 +48,7 @@ const Navbar = () => {
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-600" // Mobile menu icon color fix
+                className="h-5 w-5 text-gray-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -41,31 +62,17 @@ const Navbar = () => {
               </svg>
             </div>
 
-            {/* Mobile Dropdown Links */}
+            {/* Mobile Menu Items */}
             <ul
               tabIndex="-1"
               className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow text-gray-700 font-semibold"
             >
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>
-                <Link href="/all-products">All Products</Link>
-              </li>
-              <li>
-                <Link href="/add-product">Add Product</Link>
-              </li>
-              <li>
-                <Link href="/manage-product">Manage Product</Link>
-              </li>
+              {/* আমি উপরে navLinks বানিয়ে নিয়েছি যাতে কোড ক্লিন থাকে */}
+              {navLinks}
             </ul>
           </div>
 
-          {/* Logo */}
-          <Link
-            href="/"
-            className="text-3xl font-bold text-gray-100 cursor-pointer"
-          >
+          <Link href="/" className="text-3xl font-bold text-gray-100 cursor-pointer">
             Roam <span className="font-black text-[#4bc0d9]">Car</span>
           </Link>
         </div>
@@ -73,44 +80,15 @@ const Navbar = () => {
         {/* Navbar Center (Desktop Menu) */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal flex gap-4 font-bold text-[16px] px-5 text-gray-200">
-            <li>
-              <Link href="/" className="hover:text-[#4bc0d9] transition-colors">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/all-products"
-                className="hover:text-[#4bc0d9] transition-colors"
-              >
-                All Products
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/add-product"
-                className="hover:text-[#4bc0d9] transition-colors"
-              >
-                Add Product
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/manage-product"
-                className="hover:text-[#4bc0d9] transition-colors"
-              >
-                Manage Product
-              </Link>
-            </li>
+             {/* ডেস্কটপেও একই লিংক ব্যবহার করলাম */}
+             {navLinks}
           </ul>
         </div>
 
         {/* Navbar End (User Profile or Login Button) */}
         <div className="navbar-end">
           {user ? (
-            // --- User Logged In View ---
             <div className="dropdown dropdown-end">
-              {/* Profile Picture Trigger */}
               <div
                 tabIndex={0}
                 role="button"
@@ -120,18 +98,15 @@ const Navbar = () => {
                   {user.photoURL ? (
                     <img src={user.photoURL} alt={user.displayName} />
                   ) : (
-                    // ছবি না থাকলে ডিফল্ট আইকন
                     <FaUserCircle className="w-full h-full text-gray-400 bg-white" />
                   )}
                 </div>
               </div>
 
-              {/* Dropdown Menu Content */}
               <ul
                 tabIndex="-1"
                 className="menu menu-sm dropdown-content bg-white mt-8 rounded-box z-[1] mt-3 w-64 p-4 shadow-xl border border-gray-100"
               >
-                {/* User Info Section */}
                 <li className="mb-2 border-b border-gray-100 pb-2">
                   <div className="flex flex-col items-center gap-2 pointer-events-none">
                     <div className="avatar">
@@ -154,20 +129,13 @@ const Navbar = () => {
                   </div>
                 </li>
 
-                {/* Menu Actions */}
                 <li>
-                  <Link
-                    href="/profile"
-                    className="justify-between text-gray-600 font-medium"
-                  >
+                  <Link href="/profile" className="justify-between text-gray-600 font-medium">
                     View Profile
-                    <span className="badge bg-[#4bc0d9] text-white border-none">
-                      New
-                    </span>
+                    <span className="badge bg-[#4bc0d9] text-white border-none">New</span>
                   </Link>
                 </li>
 
-                {/* Logout Button */}
                 <li className="mt-2">
                   <button
                     onClick={handleLogout}
@@ -179,8 +147,6 @@ const Navbar = () => {
               </ul>
             </div>
           ) : (
-            // --- User Logged Out View ---
-
             <div className="flex justify-center items-center gap-5">
               <Link href="/loginpage">
                 <button className="btn bg-[#4bc0d9] text-white hover:bg-[#3aa8bf] border-none px-6 font-bold">
