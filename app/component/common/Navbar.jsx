@@ -21,14 +21,12 @@ const Navbar = () => {
     }
   };
 
-  // কমন লিংকগুলো একটা ভেরিয়েবলে রাখলাম যাতে দুই জায়গায় লিখতে সুবিধা হয়
-  // তবে আপনি চাইলে সরাসরি নিচেও লিখতে পারেন
+
   const navLinks = (
     <>
       <li><Link href="/" className="hover:text-[#4bc0d9] transition-colors">Home</Link></li>
       <li><Link href="/all-products" className="hover:text-[#4bc0d9] transition-colors">All Products</Link></li>
       
-      {/* 🔥 কন্ডিশন: ইউজার থাকলেই শুধু এই লিংকগুলো দেখাবে 🔥 */}
       {user && (
         <>
           <li><Link href="/add-product" className="hover:text-[#4bc0d9] transition-colors">Add Product</Link></li>

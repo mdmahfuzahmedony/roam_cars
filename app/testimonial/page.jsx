@@ -52,10 +52,10 @@ const TestimonialSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((item) => (
             <div
-              key={item._id} // Using your specific _id
+              key={item._id} 
               className="bg-gray-600 p-8 rounded-2xl shadow-lg  border-gray-100 flex flex-col hover:shadow-2xl transition-all duration-300 relative group"
             >
-              {/* Decorative Quote Icon */}
+        
               <FaQuoteLeft className="text-blue-100 text-5xl absolute top-6 right-6 -z-0 group-hover:text-blue-200 transition-colors" />
 
               {/* Star Rating Logic based on item.rating */}
